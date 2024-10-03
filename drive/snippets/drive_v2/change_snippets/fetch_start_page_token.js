@@ -25,11 +25,14 @@ async function fetchStartPageToken() {
   const {GoogleAuth} = require('google-auth-library');
   const {google} = require('googleapis');
 
-  const auth = new GoogleAuth({scopes: 'https://www.googleapis.com/auth/drive'});
+  const auth = new GoogleAuth({
+    scopes: 'https://www.googleapis.com/auth/drive',
+  });
   const service = google.drive({version: 'v2', auth});
   try {
     const res = await service.changes.getStartPageToken();
     console.log('Start token:', res.data.startPageToken);
+    return res.data.startPageToken;
   } catch (err) {
     // TODO(developer) - Handle error
     throw err;
@@ -38,6 +41,3 @@ async function fetchStartPageToken() {
 // [END drive_fetch_start_page_token]
 
 module.exports = fetchStartPageToken;
-if (module === require.main) {
-  fetchStartPageToken();
-}

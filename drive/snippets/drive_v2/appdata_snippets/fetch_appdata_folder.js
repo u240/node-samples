@@ -25,7 +25,9 @@ async function fetchAppdataFolder() {
   const {GoogleAuth} = require('google-auth-library');
   const {google} = require('googleapis');
 
-  const auth = new GoogleAuth({scopes: 'https://www.googleapis.com/auth/drive.appdata'});
+  const auth = new GoogleAuth({
+    scopes: 'https://www.googleapis.com/auth/drive.appdata',
+  });
   const service = google.drive({version: 'v2', auth});
   try {
     const file = await service.files.get({
@@ -33,6 +35,7 @@ async function fetchAppdataFolder() {
       fields: 'id',
     });
     console.log('File Id:', file.data.id);
+    return file.data.id;
   } catch (err) {
     // TODO(developer) - Handle error
     throw err;
@@ -41,6 +44,3 @@ async function fetchAppdataFolder() {
 // [END drive_fetch_appdata_folder]
 
 module.exports = fetchAppdataFolder;
-if (module === require.main) {
-  fetchAppdataFolder();
-}

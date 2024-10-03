@@ -26,7 +26,9 @@ async function fetchChanges(savedStartPageToken) {
   const {GoogleAuth} = require('google-auth-library');
   const {google} = require('googleapis');
 
-  const auth = new GoogleAuth({scopes: 'https://www.googleapis.com/auth/drive.readonly'});
+  const auth = new GoogleAuth({
+    scopes: 'https://www.googleapis.com/auth/drive.readonly',
+  });
   const service = google.drive({version: 'v3', auth});
   try {
     let pageToken = savedStartPageToken;
@@ -39,6 +41,7 @@ async function fetchChanges(savedStartPageToken) {
         console.log('change found for file: ', change.fileId);
       });
       pageToken = res.data.newStartPageToken;
+      return pageToken;
     } while (pageToken);
   } catch (err) {
     // TODO(developer) - Handle error
@@ -47,8 +50,4 @@ async function fetchChanges(savedStartPageToken) {
 }
 // [END drive_fetch_changes]
 
-
 module.exports = fetchChanges;
-if (module === require.main) {
-  fetchChanges();
-}
